@@ -1,12 +1,12 @@
-const mysql = require("mysql");
-const GenID = require("../utils/SnowFlake");
-
-const genid = new GenID({ WorkerId: 1 });
+const mysql = require('mysql')
+const GenID = require('../utils/SnowFlake')
+const { DADTEBASE } = require('../config')
+const genid = new GenID({ WorkerId: 1 })
 const db = mysql.createPool({
-  host: "127.0.0.1",
-  user: "root",
-  password: "123456",
-  database: "blog",
-});
+  host: DADTEBASE.host,
+  user: DADTEBASE.user,
+  password: DADTEBASE.password,
+  database: DADTEBASE.datebase,
+})
 
-module.exports = { db, genid };
+module.exports = { db, genid }
