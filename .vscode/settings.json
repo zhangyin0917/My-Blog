@@ -1,0 +1,11 @@
+{
+    "eslint.run": "onType",
+    "eslint.options": {
+      "extensions": [".js", ".vue", ".jsx", ".tsx"]
+    },
+    "editor.codeActionsOnSave": {
+    //这句就是当你按下保存时,他会给你格式化
+      "source.fixAll.eslint": true
+    }
+  }
+  
