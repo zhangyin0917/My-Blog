@@ -1,0 +1,70 @@
+require('dotenv').config()
+var createError = require('http-errors')
+var express = require('express')
+var path = require('path')
+var cookieParser = require('cookie-parser')
+var logger = require('morgan')
+var app = express()
+const cors = require('cors')
+const joi = require('joi')
+
+const multer = require('multer')
+const expressJWT = require('express-jwt')
+const SECRET_KEY = 'itheima No1' //与生成的密钥一致
+const bodyparse = require('body-parser')
+
+const useRouter = require('./routes/users')
+const useRouterBlogType = require('./routes/blogType')
+const blogRouter = require('./routes/Blog')
+const uploadRouter = require('./routes/uploadRouter')
+const objMutlter = multer({
+  dest: './public/images', //定义文件上传的位置
+})
+
+// view engine setup
+app.set('views', path.join(__dirname, 'views'))
+app.set('view engine', 'ejs')
+
+app.use(logger('dev'))
+app.use(objMutlter.any()) //任意类型的文件
+
+app.use(bodyparse.json({ limit: '100mb' }))
+app.use(cors())
+app.use(bodyparse.urlencoded({ limit: '100mb', extended: false }))
+
+app.use(cookieParser())
+app.use(express.static(path.join(__dirname, 'public')))
+
+app.use((req, res, next) => {
+  res.cc = (err, status = 1) => {
+    res.send({
+      status,
+      message: err instanceof Error ? err.message : err,
+    })
+  }
+  next()
+})
+
+app.use('/api', useRouter, useRouterBlogType, blogRouter, uploadRouter)
+app.use((req, res, next) => {
+  res.status(404).send('Not Found')
+})
+
+app.use((err, req, res, next) => {
+  if (err instanceof joi.ValidationError) {
+    return res.cc(err)
+  }
+  return res.cc(err)
+})
+app.use(
+  expressJWT
+    .expressjwt({
+      secret: SECRET_KEY,
+      algorithms: ['HS256'], //算法解析
+    })
+    .unless({
+      path: ['/api/login', '/api/captcha', '/api/rich_editor_upload', '/images/'],
+    }) //登录页无需校验
+)
+
+module.exports = app
