@@ -13,16 +13,17 @@ module.exports = {
       files: ['.eslintrc.{js,cjs}'],
       parserOptions: {
         sourceType: 'script',
-        project: './tsconfig.json',
       },
     },
   ],
   parserOptions: {
     ecmaVersion: 'latest',
+    project: './tsconfig.json',
   },
   plugins: ['react'],
   rules: {
     'react/react-in-jsx-scope': 'off',
     'comma-dangle': 'off',
+    '@typescript-eslint/explicit-function-return-type': 'off',
   },
 }
