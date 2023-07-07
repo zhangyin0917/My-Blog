@@ -4,6 +4,7 @@ import './style/App.less'
 import { Routes, Route } from 'react-router-dom'
 import type IRoutes from './routes/type'
 import routes from './routes'
+import PublicComponent from './components/Public'
 
 function App() {
   const renderRoutes = (route: IRoutes[]) => {
@@ -17,9 +18,12 @@ function App() {
   }
 
   return (
-    <Routes>
-      <Route>{renderRoutes(routes)}</Route>
-    </Routes>
+    <>
+      <Routes>
+        <Route>{renderRoutes(routes)}</Route>
+      </Routes>
+      <PublicComponent />
+    </>
   )
 }
 

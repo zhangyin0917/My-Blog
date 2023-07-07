@@ -6,6 +6,8 @@ const About = lazy(async () => await import('../../view/web/about'))
 const Archives = lazy(async () => await import('../../view/web/archives'))
 const Categories = lazy(async () => await import('../../view/web/categories'))
 const Tag = lazy(async () => await import('../../view/web/tag'))
+const Home = lazy(async () => await import('../../view/web/home'))
+const Article = lazy(async () => await import('../../view/web/article'))
 // const About = lazy(async () => await import('../../view/web/about'))
 // const About = lazy(async () => await import('../../view/web/about'))
 // const About = lazy(async () => await import('../../view/web/about'))
@@ -21,10 +23,10 @@ export default {
 
   children: [
     {
-      path: 'user',
+      path: '',
       element: (
         <PrviteRoutes roles={['user', 'admin']}>
-          <About />
+          <Home />
         </PrviteRoutes>
       ),
     },
@@ -32,12 +34,12 @@ export default {
       path: 'article/:id',
       element: (
         <PrviteRoutes roles={['user', 'admin']}>
-          <Archives />
+          <Article />
         </PrviteRoutes>
       ),
     },
     {
-      path: 'article',
+      path: 'archives',
       element: (
         <PrviteRoutes roles={['user', 'admin']}>
           <Archives />

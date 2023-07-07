@@ -7,7 +7,7 @@ interface Role {
 }
 const PrviteRoutes: React.FC<Role> = ({ children, roles }) => {
   const islogin = true
-  const ens: string = 'admin'
+  const ens: string = 'user'
   if (roles.includes(ens) && islogin) {
     return children
   }

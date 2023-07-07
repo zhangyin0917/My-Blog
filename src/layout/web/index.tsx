@@ -1,15 +1,23 @@
 import React, { type FC } from 'react'
-import { Outlet } from 'react-router-dom'
+import { Layout, Divider } from 'antd'
+import Header from './header'
+import SiderComonent from './Card'
+import '../../style/Content.less'
+import Content from './content'
 interface WebLayoutProps {
   title?: string
 }
 
 const WebLayout: FC<WebLayoutProps> = ({ title = '网页前端' }) => {
   return (
-    <div>
-      <span>{title}</span>
-      <Outlet />
-    </div>
+    <Layout>
+      <Header />
+      <Layout>
+        <SiderComonent />
+        <Divider type='vertical' />
+        <Content />
+      </Layout>
+    </Layout>
   )
 }
 
