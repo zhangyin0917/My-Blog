@@ -4,14 +4,17 @@ import './style/index.less'
 import App from './App'
 import reportWebVitals from './reportWebVitals'
 import { BrowserRouter as Router } from 'react-router-dom'
+import { Provider as BusProvider } from './hooks/useBus'
 
-const root = ReactDOM.createRoot(document.getElementById('root') as Element)
+const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 
 root.render(
   <React.StrictMode>
-    <Router>
-      <App />
-    </Router>
+    <BusProvider>
+      <Router>
+        <App />
+      </Router>
+    </BusProvider>
   </React.StrictMode>
 )
 

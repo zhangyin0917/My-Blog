@@ -2,6 +2,7 @@ import React from 'react'
 import { Dropdown, Button, Menu, type MenuProps } from 'antd'
 import AppAvatar from '../../../../components/Avayar'
 import '../../../../style/LoginInfo_style.less'
+import useBus from '../../../../hooks/useBus'
 interface UserInfo {
   name?: string
 }
@@ -9,6 +10,7 @@ interface UserInfo {
 const UserInfoPage: React.FC<UserInfo> = ({ name = 'userInfo' }) => {
   const role: number = 1
   const username: string = ''
+  const bus = useBus()
 
   const getPopupContainer = (triggerNode: { parentNode: any }) => {
     return triggerNode.parentNode
@@ -56,10 +58,10 @@ const UserInfoPage: React.FC<UserInfo> = ({ name = 'userInfo' }) => {
         </Dropdown>
       ) : (
         <>
-          <Button type='primary' size='small' ghost>
+          <Button type='primary' size='small' ghost onClick={e => bus?.emit('openSignModal', 'login')}>
             登录
           </Button>
-          <Button size='small' danger>
+          <Button size='small' danger onClick={e => bus?.emit('openSignModal', 'register')}>
             注册
           </Button>
         </>
