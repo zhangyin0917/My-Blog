@@ -4,9 +4,12 @@ const jsonwebtoken = require('jsonwebtoken')
 
 const config = require('../config')
 const svgCaptcha = require('svg-captcha')
+const fetchImageAndLog = require('../component/RandomImage')
 // 注册接口
-exports.reqUser = (req, res) => {
+exports.reqUser = async (req, res) => {
   const userInfo = req.body
+  const images = await fetchImageAndLog()
+  console.log(images)
   const sqlStr = 'select * from t_user where username = ? '
   db.query(sqlStr, userInfo.username, (err, results) => {
     if (err) {
@@ -23,7 +26,8 @@ exports.reqUser = (req, res) => {
       {
         username: userInfo.username,
         password: userInfo.password,
-        superuser: userInfo.superuser,
+        email: userInfo.email,
+        avatar: images,
       },
       (err, results) => {
         if (err) {
@@ -42,25 +46,31 @@ exports.reqUser = (req, res) => {
 // 登录接口
 exports.login = (req, res) => {
   const userInfos = req.body
-  console.log(userInfos)
-  if (userInfos.captcha !== result) {
+
+  if (userInfos.captcha.toLowerCase() !== result) {
     return res.cc('验证码错误！')
   }
   const sql = 'select * from t_user where username = ?'
   db.query(sql, userInfos.username, (err, results) => {
     if (err) return res.cc(err)
-    if (results.length !== 1) return res.cc('登陆失败')
+    if (results.length !== 1) return res.cc('账号或者密码错误')
     //    解密
     const compareResult = bcrypt.compareSync(userInfos.password, results[0].password)
-    if (!compareResult) return res.cc('登录失败')
+    if (!compareResult) return res.cc('账号或者密码错误')
     const user = { username: results[0].usename, password: '' }
-    console.log(user)
     const tokenStr = jsonwebtoken.sign(user, config.jwtSecretKey, {
       expiresIn: config.expiresIn,
     })
     return res.send({
       status: 0,
       message: '登录成功',
+      data: {
+        username: results[0].username,
+        avatar: results[0].avatar,
+        email: results[0].email,
+        phone: results[0].phone,
+        role: results[0].role,
+      },
       token: 'Bearer ' + tokenStr,
     })
   })
@@ -71,22 +81,22 @@ exports.getCaptcha = (req, res) => {
   const captcha = svgCaptcha.create({
     size: 6,
     width: 120,
-    height: 32,
+    height: 40,
     fontSize: 50,
     ignoreChars: '0o1LiO',
     noise: '3',
     color: true,
-    background: '#ff9999',
+    background: '#cc9966',
   })
 
   req.session = captcha.text.toLowerCase()
-
   result = req.session
-  res.setHeader('Content-Type', 'image/svg+xml')
+
   if (captcha) {
     return res.send({
       status: 0,
       message: 'success',
+      text: captcha.text,
       data: captcha.data,
     })
   }

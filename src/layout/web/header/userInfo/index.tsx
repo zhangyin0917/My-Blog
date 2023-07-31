@@ -1,16 +1,21 @@
 import React from 'react'
-import { Dropdown, Button, Menu, type MenuProps } from 'antd'
+import { Dropdown, Button, Menu, type MenuProps, Avatar } from 'antd'
+import { useSelector, useDispatch } from 'react-redux'
 import AppAvatar from '../../../../components/Avayar'
 import '../../../../style/LoginInfo_style.less'
 import useBus from '../../../../hooks/useBus'
-interface UserInfo {
-  name?: string
-}
+import { loginout } from '../../../../redux/user/actions'
+import { type AppDispatch } from '../../../../redux/type'
+import { ImageTransform, get } from '../../../../untils/config'
+import { useNavigate } from 'react-router-dom'
+import { type RootState } from '../../../../redux/rootReducer'
 
-const UserInfoPage: React.FC<UserInfo> = ({ name = 'userInfo' }) => {
-  const role: number = 1
-  const username: string = ''
+const UserInfoPage: React.FC = () => {
   const bus = useBus()
+  const userInfo = useSelector((state: RootState) => state.user)
+  const { role, avatar, username } = userInfo
+  const navigate = useNavigate()
+  const dispatch = useDispatch<AppDispatch>()
 
   const getPopupContainer = (triggerNode: { parentNode: any }) => {
     return triggerNode.parentNode
@@ -19,7 +24,7 @@ const UserInfoPage: React.FC<UserInfo> = ({ name = 'userInfo' }) => {
   const items: MenuProps['items'] = [
     {
       key: '1',
-      label: role === 1 && (
+      label: role === 'admin' && (
         <Menu.Item>
           <span> 导入文章</span>
         </Menu.Item>
@@ -27,9 +32,9 @@ const UserInfoPage: React.FC<UserInfo> = ({ name = 'userInfo' }) => {
     },
     {
       key: '2',
-      label: role === 1 && (
+      label: role === 'admin' && (
         <Menu.Item>
-          <span> 后台管理</span>
+          <span onClick={() => navigate('/admin')}> 后台管理</span>
         </Menu.Item>
       ),
     },
@@ -37,7 +42,7 @@ const UserInfoPage: React.FC<UserInfo> = ({ name = 'userInfo' }) => {
       key: '3',
       label: (
         <Menu.Item>
-          <span> 退出登录</span>
+          <span onClick={async e => await dispatch(loginout())}>退出登录</span>
         </Menu.Item>
       ),
     },
@@ -53,7 +58,7 @@ const UserInfoPage: React.FC<UserInfo> = ({ name = 'userInfo' }) => {
           menu={{ items }}
           trigger={['click', 'hover']}>
           <div>
-            <AppAvatar />
+            <AppAvatar icon={ImageTransform(avatar)} />
           </div>
         </Dropdown>
       ) : (

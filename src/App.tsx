@@ -7,6 +7,10 @@ import routes from './routes'
 import PublicComponent from './components/Public'
 
 function App() {
+  const [data, setData] = React.useState({ field: '' })
+  React.useEffect(() => {
+    console.log('This will run after each render')
+  }, [data])
   const renderRoutes = (route: IRoutes[]) => {
     return route.map((route, index) => {
       return (
@@ -16,7 +20,6 @@ function App() {
       )
     })
   }
-
   return (
     <>
       <Routes>
