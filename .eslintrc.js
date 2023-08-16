@@ -33,5 +33,6 @@ module.exports = {
     '@typescript-eslint/no-misused-promises': 'off',
     '@typescript-eslint/ban-types': 'off',
     'n/no-callback-literal': 'off',
+    '@typescript-eslint/restrict-plus-operands': 'off',
   },
 }

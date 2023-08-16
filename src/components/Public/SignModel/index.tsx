@@ -10,7 +10,7 @@ import { type AppDispatch } from '../../../redux/type'
 import { InputRules } from '../../InputRules'
 
 const { enable } = GithubSign.GithubSign
-function FormItem(props: any) {
+export function FormItem(props: any) {
   const { children, ...rest } = props
   return <Form.Item {...rest}>{children}</Form.Item>
 }
@@ -147,7 +147,7 @@ const SignModel: React.FC = props => {
       </Form>
 
       <Button type='primary' block onClick={handleSubmit}>
-        {type}
+        {type === 'login' ? '登录' : '注册'}
       </Button>
 
       {enable && (

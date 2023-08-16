@@ -1,5 +1,6 @@
 import axios, { type AxiosInstance, type AxiosResponse, type AxiosError } from 'axios'
-import config from '../config'
+import { message } from 'antd'
+import { get } from './config'
 
 const instance: AxiosInstance = axios.create({
   baseURL: process.env.REACT_APP_API_URL,
@@ -8,19 +9,31 @@ const instance: AxiosInstance = axios.create({
 
 instance.interceptors.request.use(
   async config => {
+    if (config.url !== '/api/captcha' && config.url !== '/api/login') {
+      const { token } = get('userInfo')
+      if (token) {
+        config.headers.Authorization = token
+      }
+    }
     return config
   },
   async err => {
-    return await Promise.reject(err)
+    throw err
   }
 )
 
 instance.interceptors.response.use(
   async config => {
+    if (config.data.status === 1) {
+      message.error(config.data.message)
+    }
     return config
   },
   async (err: AxiosError) => {
-    return await Promise.reject(err)
+    console.log('ceshi', err)
+
+    message.error(err.message)
+    throw err
   }
 )
 

@@ -17,10 +17,11 @@ const useRouter = require('./routes/users')
 const useRouterBlogType = require('./routes/blogType')
 const blogRouter = require('./routes/Blog')
 const uploadRouter = require('./routes/uploadRouter')
+const { AxiosError } = require('axios')
+const { log } = require('console')
 const objMutlter = multer({
   dest: './public/images', //定义文件上传的位置
 })
-
 // view engine setup
 app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'ejs')
@@ -44,18 +45,6 @@ app.use((req, res, next) => {
   }
   next()
 })
-
-app.use('/api', useRouter, useRouterBlogType, blogRouter, uploadRouter)
-app.use((req, res, next) => {
-  res.status(404).send('Not Found')
-})
-
-app.use((err, req, res, next) => {
-  if (err instanceof joi.ValidationError) {
-    return res.cc(err)
-  }
-  return res.cc(err)
-})
 app.use(
   expressJWT
     .expressjwt({
@@ -66,5 +55,25 @@ app.use(
       path: ['/api/login', '/api/captcha', '/api/rich_editor_upload', '/images/'],
     }) //登录页无需校验
 )
+app.use('/api', useRouter, useRouterBlogType, blogRouter, uploadRouter)
+
+app.use((err, req, res, next) => {
+  // if (err instanceof AxiosError && err.response.status === 404) {
+  //   return res.status(404).json({
+  //     message: 'Not Found',
+  //     status: 1,
+  //   })
+  // }
+  // //   return res.static(503).send('No internet connection')
+  // // }
+  // res.status(500).send('Internal Server Error')
+})
+
+app.use((err, req, res, next) => {
+  if (err instanceof joi.ValidationError) {
+    return res.cc(err)
+  }
+  return res.cc(err)
+})
 
 module.exports = app

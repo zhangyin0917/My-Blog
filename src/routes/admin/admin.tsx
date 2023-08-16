@@ -5,8 +5,8 @@ import AdminLayout from '../../layout/admin'
 import PrviteRoutes from '../../components/RolePermissions'
 
 const Home = lazy(async () => await import('../../view/admin/home'))
-const Edit = lazy(async () => await import('../../view/admin/article/edit'))
-const Add = lazy(async () => await import('../../view/admin/article/edit'))
+const Edit = lazy(async () => await import('../../view/admin/article/add'))
+const Add = lazy(async () => await import('../../view/admin/article/add'))
 const Manager = lazy(async () => await import('../../view/admin/article/manager'))
 const User = lazy(async () => await import('../../view/admin/user'))
 
@@ -27,7 +27,7 @@ export default {
       ),
     },
     {
-      path: 'article/edit',
+      path: 'article/edit/:id',
       element: (
         <PrviteRoutes roles={['admin']}>
           <Edit />
@@ -35,7 +35,7 @@ export default {
       ),
     },
     {
-      path: 'article/edit/:id',
+      path: 'article/add',
       element: (
         <PrviteRoutes roles={['admin']}>
           <Add />

@@ -11,7 +11,7 @@ interface Role {
 const PrviteRoutes: React.FC<Role> = ({ children, roles }) => {
   const userInfo = useSelector((state: any) => state.user)
   const navigate = useNavigate()
-  const { role, token } = userInfo
+  const { role } = userInfo
   const [defaultRole, setDefultRoles] = useState('user')
   if (roles.includes(role || defaultRole)) {
     return children
