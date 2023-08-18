@@ -17,7 +17,7 @@ const useRouter = require('./routes/users')
 const useRouterBlogType = require('./routes/blogType')
 const blogRouter = require('./routes/Blog')
 const uploadRouter = require('./routes/uploadRouter')
-const { AxiosError } = require('axios')
+
 const { log } = require('console')
 const objMutlter = multer({
   dest: './public/images', //定义文件上传的位置
@@ -52,7 +52,7 @@ app.use(
       algorithms: ['HS256'], //算法解析
     })
     .unless({
-      path: ['/api/login', '/api/captcha', '/api/rich_editor_upload', '/images/'],
+      path: ['/api/login', '/api/captcha', '/api/rich_editor_upload', '/api/getBlog', '/api/getBlogById'],
     }) //登录页无需校验
 )
 app.use('/api', useRouter, useRouterBlogType, blogRouter, uploadRouter)

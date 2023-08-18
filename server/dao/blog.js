@@ -1,3 +1,4 @@
+const resolve = require('resolve')
 const { db } = require('../db/index')
 
 // 增加博客
@@ -25,10 +26,9 @@ exports.addBlog = (req, res) => {
   })
 }
 
-// 获取博客
-
+// 获取所有博客
 exports.getBlog = (req, res) => {
-  const sqlstr = 'select * from t_blog'
+  const sqlstr = 'select blog_id, blog_status, cover_image,blog_title FROM t_blog'
   db.query(sqlstr, (err, results) => {
     if (err) {
       return res.cc(err)
@@ -39,6 +39,70 @@ exports.getBlog = (req, res) => {
         status: 0,
         message: 'success',
         data: results,
+      })
+    }
+  })
+}
+
+// 获取博客详情页内容
+exports.getBlogById = (req, res) => {
+  const blogId = req.query.id // 获取 URL 中的参数，即博客的 ID
+  const sqlstr = 'select * from t_blog where blog_id = ?'
+  db.query(sqlstr, [blogId], async (err, results) => {
+    if (err) {
+      return res.cc(err)
+    }
+    if (results.length > 0) {
+      const blogDetail = results[0]
+      // 查询类型信息
+      const getTypeInfo = async () => {
+        const typeSql = 'SELECT * FROM t_blogtype WHERE type_id = ?'
+        return new Promise((resolve, reject) => {
+          db.query(typeSql, [blogDetail.type_id], (typeErr, typeResults) => {
+            if (typeErr) {
+              reject(typeErr)
+            } else {
+              resolve(typeResults[0])
+            }
+          })
+        })
+      }
+      // 查询用户信息
+      const getUserInfo = async () => {
+        const userSql = 'SELECT * FROM t_user WHERE userId = ?'
+        return new Promise((resolve, reject) => {
+          db.query(userSql, [blogDetail.userid], (userErr, userResults) => {
+            if (userErr) {
+              reject(userErr)
+            } else {
+              resolve(userResults[0])
+            }
+          })
+        })
+      }
+
+      try {
+        const [typeInfo, userInfo] = await Promise.all([getTypeInfo(), getUserInfo()])
+        res.send({
+          status: 0,
+          message: 'success',
+          data: {
+            ...blogDetail,
+            typeInfo,
+            userInfo,
+          },
+        })
+      } catch (fetchErr) {
+        res.send({
+          status: 0,
+          message: 'success',
+          data: blogDetail,
+        })
+      }
+    } else {
+      res.send({
+        status: 1,
+        message: 'No blog found with the given ID',
       })
     }
   })
