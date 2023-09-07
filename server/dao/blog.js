@@ -4,14 +4,15 @@ const { db } = require('../db/index')
 // 增加博客
 exports.addBlog = (req, res) => {
   const addBlog = req.body
+  console.log(addBlog)
   const str = 'insert into t_blog set ?'
   const blog = {
-    blog_title: addBlog.blogtitle,
-    blog_content: addBlog.blogcontent,
-    blog_status: addBlog.blogstatus,
-    cover_image: addBlog.coverimage,
-    userid: addBlog.userId,
-    type_id: addBlog.typeId,
+    blog_title: addBlog.title,
+    blog_content: addBlog.markDownValue,
+    blog_status: 0,
+    cover_image: addBlog.coverImg,
+    userid: 4,
+    type_id: addBlog.categrateValue,
   }
 
   db.query(str, blog, (err, results) => {
@@ -21,8 +22,23 @@ exports.addBlog = (req, res) => {
     if (results.affectedRows !== 1) {
       return res.cc('发布失败，请重试！')
     }
-    console.log(results)
-    return res.cc('发布成功', 0)
+    // 获取新插入的博客id
+    const newBlogId = results.insertId
+    // 获取前端传过来的标签id数组
+    const tags = addBlog.tags
+    // 创建包含标签id和博客id的数据数组
+    const tagBlogData = tags.map(tagid => ({
+      tag_id: tagid,
+      blog_id: newBlogId,
+    }))
+    // 插入标签和博客关联数据
+    const insetTagBlogQuery = 'insert into t_tag_blog (tag_id, blog_id) VALUES ?'
+    db.query(insetTagBlogQuery, [tagBlogData.map(item => [item.tag_id, item.blog_id])], (err, result) => {
+      if (err) {
+        return res.cc(err)
+      }
+      return res.cc('发布成功', 0)
+    })
   })
 }
 
@@ -33,7 +49,6 @@ exports.getBlog = (req, res) => {
     if (err) {
       return res.cc(err)
     }
-
     if (results.length > 0) {
       res.send({
         status: 0,

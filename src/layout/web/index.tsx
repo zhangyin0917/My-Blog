@@ -15,7 +15,7 @@ const WebLayout: FC<WebLayoutProps> = ({ title = '网页前端' }) => {
       <Header />
       <Layout>
         <SiderComonent />
-        <Divider type='vertical' />
+        {/* <Divider type='vertical' /> */}
         <Content />
         <RightSider />
       </Layout>

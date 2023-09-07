@@ -88,7 +88,6 @@ const SignModel: React.FC = props => {
       const values = await form.validateFields()
       const { confirPsw, ...newValues } = values
       dispatch(register(newValues))
-
       return
     }
     message.error('未输入或表单输入有误')

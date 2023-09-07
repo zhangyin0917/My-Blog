@@ -10,8 +10,11 @@ const WebHome: React.FC = () => {
   const getArticle = async () => {
     try {
       const Results = await instance.post('/api/getBlog')
+      console.log(Results)
+
       if (Results.data.status === 0) {
-        setArticle(Results.data.data)
+        const filterDate = Results.data.data.filter((type: any) => type.blog_status === 0)
+        setArticle(filterDate)
       }
     } catch (err) {
       console.log(err)
