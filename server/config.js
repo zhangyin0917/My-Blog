@@ -4,9 +4,9 @@ module.exports = {
   expiresIn: '10h',
   // 数据库信息
   DADTEBASE: {
-    host: 'localhost',
-    datebase: 'blog',
-    user: 'root',
-    password: '123456',
+    host: '',
+    datebase: '',
+    user: '',
+    password: '',
   },
 }
