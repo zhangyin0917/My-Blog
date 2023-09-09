@@ -1,4 +1,3 @@
-const resolve = require('resolve')
 const { db } = require('../db/index')
 
 // 增加博客

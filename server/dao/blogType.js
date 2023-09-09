@@ -10,7 +10,6 @@ exports.addBlogType = (req, res) => {
     if (err) {
       return res.cc(err)
     }
-    console.log(results)
     if (results.length > 0 && results.typestate === 0) {
       return res.cc('该类型已添加！')
     }
@@ -36,11 +35,11 @@ exports.getBlogType = (req, res) => {
     if (err) {
       return res.cc(err)
     }
-    if (results.length > 0) {
+    if (results.length >= 0) {
       res.send({
         status: 0,
         massage: 'success',
-        data: results,
+        data: results || [],
       })
     }
   })

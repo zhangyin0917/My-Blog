@@ -19,7 +19,6 @@ const blogRouter = require('./routes/Blog')
 const uploadRouter = require('./routes/uploadRouter')
 const BlogTag = require('./routes/blogTag')
 
-const { log } = require('console')
 const objMutlter = multer({
   dest: './public/images', //定义文件上传的位置
 })
