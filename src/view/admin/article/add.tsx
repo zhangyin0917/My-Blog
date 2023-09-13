@@ -1,11 +1,12 @@
 import React, { useEffect, useState, useRef } from 'react'
-import { Form, Input, Select, Button, Row, Col, message } from 'antd'
+import { Form, Input, Select, Button, Row, Col, message, Space } from 'antd'
 import { FormItem } from '../../../components/Public/SignModel'
 import instance from '../../../untils/axios'
 import tagRender from '../../../components/tag'
 import MarkdownEditor from '../../../components/markdownEditor'
 import useBus from '../../../hooks/useBus'
 import ImageProview from './Image'
+import CoverImgUpload from '../../../components/coverImgUpload'
 
 const AdminEdit: React.FC = () => {
   const [options, SetOptions] = useState([])
@@ -86,19 +87,22 @@ const AdminEdit: React.FC = () => {
       </FormItem>
       <FormItem label='分类' name='categrate'>
         <Row gutter={25}>
-          <Col span={17}>
+          <Col span={15}>
             <Select style={{ width: 120 }} onChange={label => setCategrateValue(label)} options={options} />
           </Col>
           <Col span={3}>
             <ImageProview image={coverImg} />
           </Col>
-          <Col span={4}>
-            <Button style={{ marginRight: '15px' }} onClick={e => bus?.emit('openCoverImgeModel', handleSetCoverImg)}>
-              选择封面
-            </Button>
-            <Button type='primary' onClick={handleAddBlog}>
-              发布
-            </Button>
+          <Col span={6}>
+            <Space wrap>
+              <CoverImgUpload />
+              <Button style={{ marginRight: '15px' }} onClick={e => bus?.emit('openCoverImgeModel', handleSetCoverImg)}>
+                选择封面
+              </Button>
+              <Button type='primary' onClick={handleAddBlog}>
+                发布
+              </Button>
+            </Space>
           </Col>
         </Row>
       </FormItem>

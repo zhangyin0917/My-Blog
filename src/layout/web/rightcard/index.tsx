@@ -16,10 +16,10 @@ const RightSider: React.FC = () => {
       className='Sider_box'
       width={330}
       style={{
-        background: '#fff',
+        background: '#ede4e4',
         overflow: 'hidden',
       }}>
-      <CalendarSidebar selectedDate={selectedDate} onSelectDate={handleSelectDate} />
+      {/* <CalendarSidebar selectedDate={selectedDate} onSelectDate={handleSelectDate} /> */}
     </Sider>
   )
 }

@@ -57,17 +57,7 @@ app.use(
 )
 app.use('/api', useRouter, useRouterBlogType, blogRouter, uploadRouter, BlogTag)
 
-app.use((err, req, res, next) => {
-  // if (err instanceof AxiosError && err.response.status === 404) {
-  //   return res.status(404).json({
-  //     message: 'Not Found',
-  //     status: 1,
-  //   })
-  // }
-  // //   return res.static(503).send('No internet connection')
-  // // }
-  // res.status(500).send('Internal Server Error')
-})
+app.use((err, req, res, next) => {})
 
 app.use((err, req, res, next) => {
   if (err instanceof joi.ValidationError) {

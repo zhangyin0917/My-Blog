@@ -95,8 +95,24 @@ exports.getBlogById = (req, res) => {
         })
       }
 
+      // 查询博客标签信息
+      const getBlogTags = async () => {
+        const tagsSql =
+          'SELECT t_tag.tag_name FROM t_tag INNER JOIN t_tag_blog ON t_tag.tag_id = t_tag_blog.tag_id WHERE t_tag_blog.blog_id = ?'
+        return new Promise((resolve, reject) => {
+          db.query(tagsSql, [blogId], (tagsErr, tagsResults) => {
+            if (tagsErr) {
+              reject(tagsErr)
+            } else {
+              const tags = tagsResults.map(tag => tag.tag_name)
+              resolve(tags)
+            }
+          })
+        })
+      }
+
       try {
-        const [typeInfo, userInfo] = await Promise.all([getTypeInfo(), getUserInfo()])
+        const [typeInfo, userInfo, BlogTags] = await Promise.all([getTypeInfo(), getUserInfo(), getBlogTags()])
         res.send({
           status: 0,
           message: 'success',
@@ -104,6 +120,7 @@ exports.getBlogById = (req, res) => {
             ...blogDetail,
             typeInfo,
             userInfo,
+            BlogTags,
           },
         })
       } catch (fetchErr) {
@@ -123,7 +140,6 @@ exports.getBlogById = (req, res) => {
 }
 
 //修改博客
-
 exports.updateBlog = (req, res) => {
   const updateBlog = req.body
   const sqlstrs = 'update t_blog set blog_title= ?,blog_content=?,blog_status=?,cover_image=? where blog_id =? '

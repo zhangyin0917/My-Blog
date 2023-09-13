@@ -4,9 +4,8 @@ import 'react-markdown-editor-lite/lib/index.css' // 引入编辑器样式
 import MarkdownIt from 'markdown-it' // 引入 markdown-it
 import instance from '../../untils/axios'
 import { message } from 'antd'
-import { Light as SyntaxHighlighter } from 'react-syntax-highlighter'
-import { prism } from 'react-syntax-highlighter/dist/esm/styles/prism'
-
+import ReactDOMServer from 'react-dom/server'
+import SyntaxHighCom from '../SyntaxHigh'
 interface MarkdownProps {
   markdown: (value: string) => void
 }
@@ -37,8 +36,24 @@ const MarkdownEditor: React.FC<MarkdownProps> = ({ markdown }) => {
   }, [content])
 
   const mdParser = new MarkdownIt()
+  // 把markdown文本转换为Html渲染在预览区
   const renderHTML = (text: string) => {
-    return mdParser.render(text)
+    const html = mdParser.render(text)
+
+    // 更改预览区图片的大小
+    const modifiedHtml = html.replace(
+      /<img/g,
+      '<img style="display: block; margin: 0 auto; max-width: 100%; max-height: 300px;"'
+    )
+    // 由于makdownit把markdown文本渲染为html元素的时候会把<>渲染为 lt； 防治html标签的渲染   处理html实体编码
+    const unescapedHtml = modifiedHtml.replace(/lt;/g, '<').replace(/&gt;/g, '>')
+    // 使用react-syntax-highlighter来高亮代码块
+    const final = unescapedHtml.replace(/<pre><code>([\s\S]*?)<\/code><\/pre>/g, (match, p2: string) => {
+      // 使用ReactDOMServer.renderToString()将React组件转换为字符串
+      const codeHighlighter = ReactDOMServer.renderToString(<SyntaxHighCom>{p2}</SyntaxHighCom>)
+      return codeHighlighter
+    })
+    return final
   }
 
   const handleEditorChange = ({ text }: { text: string }) => {

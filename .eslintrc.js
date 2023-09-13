@@ -34,5 +34,6 @@ module.exports = {
     '@typescript-eslint/ban-types': 'off',
     'n/no-callback-literal': 'off',
     '@typescript-eslint/restrict-plus-operands': 'off',
+    '@typescript-eslint/restrict-template-expressions': 'off',
   },
 }
