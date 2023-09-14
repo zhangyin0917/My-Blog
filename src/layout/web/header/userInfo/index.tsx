@@ -66,8 +66,8 @@ const UserInfoPage: React.FC = () => {
           <Button type='primary' size='small' ghost onClick={e => bus?.emit('openSignModal', 'login')}>
             登录
           </Button>
-          <Button size='small' danger onClick={e => bus?.emit('openSignModal', 'register')}>
-            注册
+          <Button disabled size='small' danger onClick={e => bus?.emit('openSignModal', 'register')}>
+            注册(待开放)
           </Button>
         </>
       )}

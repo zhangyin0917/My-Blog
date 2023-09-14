@@ -61,9 +61,9 @@ const SiderComonent: React.FC<SiderProps> = ({ name = '侧边栏' }) => {
           color: '#999aaa',
           // alignItems: 'center',
         }}>
-        张殷&nbsp;|&nbsp;15560126275
+        张殷&nbsp;|&nbsp;155****6275
         <br />
-        前端开发&nbsp;|&nbsp;1907832587
+        前端开发&nbsp;|&nbsp;1907832587@qq.com
         <br />
         河南科技学院&nbsp;|&nbsp;2023届
       </div>
