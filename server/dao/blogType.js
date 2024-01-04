@@ -2,15 +2,14 @@ const { db } = require('../db/index')
 
 //1
 // 增加博客类型
-
 exports.addBlogType = (req, res) => {
   const BlogTypeInfo = req.body
-  const sqlStr = 'select * from t_blogtype where typeName = ?'
+  const sqlStr = 'select * from t_blogtype where typeName = ? and typeState = 0'
   db.query(sqlStr, BlogTypeInfo.typename, (err, results) => {
     if (err) {
       return res.cc(err)
     }
-    if (results.length > 0 && results.typestate === 0) {
+    if (results.length > 0) {
       return res.cc('该类型已添加！')
     }
     const sql = 'insert into t_blogtype set ?'

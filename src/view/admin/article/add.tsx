@@ -50,6 +50,23 @@ const AdminEdit: React.FC = () => {
   const handleSetCoverImg = (imgUrl: string) => {
     setCoverImg(imgUrl) // 更新 coverImg 状态
   }
+
+  const getNowTime = () => {
+    const date = new Date()
+    const month = date.getMonth() + 1
+    const newMonth = month < 10 ? '0' + month : month
+    const day = date.getDate()
+    const newDay = day < 10 ? '0' + day : day
+    const hours = date.getHours()
+    const newHours = hours < 10 ? '0' + hours : hours
+    const minutes = date.getMinutes()
+    const newMinutes = minutes < 10 ? '0' + minutes : minutes
+    const seconds = date.getSeconds()
+    const newSeconds = seconds < 10 ? '0' + seconds : seconds
+    const time = `${date.getFullYear()}-${newMonth}-${newDay} ${newHours}:${newMinutes}:${newSeconds}`
+    return time
+  }
+
   const handleAddBlog = async () => {
     const { title, tags } = await form.validateFields()
     if (markDownValue && coverImg && tags && title && categrateValue) {
@@ -59,6 +76,7 @@ const AdminEdit: React.FC = () => {
         coverImg,
         categrateValue,
         tags,
+        creteTime: getNowTime(),
       }
       try {
         const addBlogResult = await instance.post('/api/addBlog', blogInfo)

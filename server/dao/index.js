@@ -46,7 +46,6 @@ exports.reqUser = async (req, res) => {
 // 登录接口
 exports.login = (req, res) => {
   const userInfos = req.body
-
   if (userInfos.captcha.toLowerCase() !== result) {
     return res.cc('验证码错误！')
   }

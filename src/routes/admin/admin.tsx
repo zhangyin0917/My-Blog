@@ -10,6 +10,9 @@ const Add = lazy(async () => await import('../../view/admin/article/add'))
 const Manager = lazy(async () => await import('../../view/admin/article/manager'))
 const User = lazy(async () => await import('../../view/admin/user'))
 
+const Categrate = lazy(async () => await import('../../view/admin/catagrate'))
+const Tag = lazy(async () => await import('../../view/admin/tag'))
+
 export default {
   path: '/admin',
   element: (
@@ -55,6 +58,22 @@ export default {
       element: (
         <PrviteRoutes roles={['admin']}>
           <User />
+        </PrviteRoutes>
+      ),
+    },
+    {
+      path: 'article/categreate',
+      element: (
+        <PrviteRoutes roles={['admin']}>
+          <Categrate />
+        </PrviteRoutes>
+      ),
+    },
+    {
+      path: 'article/tag',
+      element: (
+        <PrviteRoutes roles={['admin']}>
+          <Tag />
         </PrviteRoutes>
       ),
     },

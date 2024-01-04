@@ -12,6 +12,7 @@ exports.addBlog = (req, res) => {
     cover_image: addBlog.coverImg,
     userid: 4,
     type_id: addBlog.categrateValue,
+    create_time: addBlog.creteTime,
   }
 
   db.query(str, blog, (err, results) => {

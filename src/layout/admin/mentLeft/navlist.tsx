@@ -29,9 +29,15 @@ const NavAdminList: NavList[] = [
   },
   {
     key: '4',
-    icon: <UserSwitchOutlined />,
-    title: '用户管理',
-    label: <Link to='/admin/user'>用户管理</Link>,
+    icon: <PlusCircleOutlined />,
+    title: '分类管理',
+    label: <Link to='/admin/article/categreate'>分类管理</Link>,
+  },
+  {
+    key: '5',
+    icon: <PlusCircleOutlined />,
+    title: '标签管理',
+    label: <Link to='/admin/article/tag'>标签管理</Link>,
   },
 ]
 
